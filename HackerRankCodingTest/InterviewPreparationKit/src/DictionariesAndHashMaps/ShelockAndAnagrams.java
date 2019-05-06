@@ -78,7 +78,7 @@ public class ShelockAndAnagrams {
         char[] sArr = s.toCharArray();
 
 
-
+        return 0;
     }
 
     public void getResult() {
