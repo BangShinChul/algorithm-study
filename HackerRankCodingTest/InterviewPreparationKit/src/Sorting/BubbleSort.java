@@ -107,4 +107,31 @@ Last Element: 3
 
 * */
 public class BubbleSort {
+    static void countSwaps(int[] a) {
+        int swapCnt = 0;
+
+        int n = a.length;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n - 1; j++) {
+                // 인접한 요소가 내림차순인 경우 Swap 합니다.
+                if (a[j] > a[j + 1]) {
+                    int imsi = a[j + 1];
+                    a[j + 1] = a[j];
+                    a[j] = imsi;
+                    swapCnt++;
+                }
+            }
+        }
+
+        System.out.println("Array is sorted in "+swapCnt+" swaps.");
+        System.out.println("First Element: "+a[0]);
+        System.out.println("Last Element: "+a[a.length-1]);
+
+    }
+
+    public void getResult() {
+        countSwaps(new int[]{1,2,3});
+        countSwaps(new int[]{3,2,1});
+    }
 }
