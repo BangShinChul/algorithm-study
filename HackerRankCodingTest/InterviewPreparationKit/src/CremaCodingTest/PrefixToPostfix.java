@@ -1,7 +1,6 @@
 package CremaCodingTest;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /*
 
@@ -23,12 +22,12 @@ Postfix      연산자를 피연산자의 뒤에 (오른쪽으로) 배치하는 
 설명:
 
 접두사 표기법에서 연산자는 두 개의 피연산자 바로 앞에옵니다.
-이 경우 가장 높은 우선 순위는 곱셈입니다. B * C는 * BC로 다시 쓸 수 있습니다.
+이 경우 가장 높은 우선 순위는 곱셈입니다. B*C는 *BC로 다시 쓸 수 있습니다.
 우리는 이것을 + A * BC로 쓰고 A에 더하고 이것을 D : ++ A * BCD에 더한다.
 
 후위 (postfix) 표기법에서 연산자는 두 개의 피연산자 바로 다음에옵니다.
 접두사 표기법에서와 마찬가지로 우선 순위가 가장 높습니다.
-B * C는 BC *로 기록됩니다.
+B*C는 BC*로 기록됩니다.
 이제 A : ABC * +를 추가하고 마지막으로 D : ABC * + D +에 모두 추가하십시오.
 
 - 맞춤 테스트 용 입력 형식
@@ -66,7 +65,8 @@ prefixes[prefixes[0], ... prefixes[n-1]] : prefix 표현식의 배열
 
 0. prefix 표현식 *34의 중위 표현식은 3*4이고 중위 표현식 3*4에 대한 postfix 표현식은 34* 입니다.
 
-1. prefix 표현식 +1*23의 중위 표현식은 1+2*3이고 중위 표현식 1+2*3에 대한 postfix 표현식은 123*+ 입니다.
+1. prefix 표현식 +1*23의 중위 표현식은 1+2*3이고
+중위 표현식 1+2*3에 대한 postfix 표현식은 123*+ 입니다.
 
 2. prefix 표현식 +12의 중위 표현식은 1+2이고 중위 표현식 1+2에 대한 postfix 표현식은 12+ 입니다.
 
@@ -83,20 +83,110 @@ prefixes[prefixes[0], ... prefixes[n-1]] : prefix 표현식의 배열
 - 샘플 해설 1
 다음 n = 1 표현식을 평가합니다.
 
-prefix 표현식 +1**23/14의 중위 표현식은 1+2*3*1/4 이고 중위 표현식 1+2*3*1/4 에 대한 postfix 표현식은 123*14/*+입니다.
+prefix 표현식 +1**23/14의 중위 표현식은 1+2*3*1/4 이고
+중위 표현식 1+2*3*1/4 에 대한 postfix 표현식은 123*14/*+입니다.
 
 즉, 정답으로 postfix 표현식 배열[123*14/*+]을 반환합니다.
 
++1**23/14
++1**2314/ -> /14의 /를 14의 뒤로
++1*23*14/ -> *23의 *을 23의 뒤로
++123*14/* -> *23*14/의 *을 23*14/의 뒤로
+123*14/*+ -> +1의 +를 1의 뒤로
+
+
 * */
+
 public class PrefixToPostfix {
 
+    public static boolean isOperator(char item) {
+        switch (item){
+            case '+' :
+            case '-' :
+            case '*' :
+            case '/' :
+                return true;
+        }
+        return false;
+    }
+
     public static List<String> prefixToPostfix(List<String> prefixes) {
-        // Write your code here
-        return null;
+
+        List<String> result = new ArrayList<String>();
+        Iterator<String> itr = prefixes.iterator();
+        while (itr.hasNext()) {
+            Stack<String> stack = new Stack<String>();
+            String item = itr.next();
+            int itemLength = item.length();
+
+            for (int i=itemLength-1; i>=0; i--) {
+                if (isOperator(item.charAt(i))) {
+                    // 만약 현재 인덱스의 char가 연산자일 경우
+                    // 앞의 두 인자를 뽑아낸 다음
+                    String it1 = stack.peek();
+                    stack.pop();
+                    String it2 = stack.peek();
+                    stack.pop();
+
+                    // 연산자를 인자들의 뒤로 이동한다.
+                    String temp = it1 + it2 + item.charAt(i);
+                    stack.push(temp); // 그리고 다시 stack에 push한다.
+                } else {
+                    // 현재 인덱스의 char가 연산자가 아닐 경우
+                    // 현재 인덱스의 숫자를 stack에 push한다.
+                    stack.push(item.charAt(i)+"");
+                }
+            }
+            System.out.println("result : "+stack.peek());
+            result.add(stack.peek());
+        }
+
+        return result;
+    }
+
+    public static List<String> prefixToPostfix2(List<String> prefixes) {
+
+        List<String> result = new ArrayList<String>();
+
+        for(String prefix : prefixes){
+            Stack<String> stack = new Stack<String>();
+
+            int itemLength = prefix.length();
+
+            for (int i=itemLength-1; i>=0; i--) {
+                if (isOperator(prefix.charAt(i))) {
+                    // 만약 현재 인덱스의 char가 연산자일 경우
+                    // 앞의 두 인자를 뽑아낸 다음
+                    String it1 = stack.peek();
+                    stack.pop();
+                    String it2 = stack.peek();
+                    stack.pop();
+
+                    // 연산자를 인자들의 뒤로 이동한다.
+                    String temp = it1 + it2 + prefix.charAt(i);
+                    stack.push(temp); // 그리고 다시 stack에 push한다.
+                } else {
+                    // 현재 인덱스의 char가 연산자가 아닐 경우
+                    // 현재 인덱스의 숫자를 stack에 push한다.
+                    stack.push(prefix.charAt(i)+"");
+                }
+            }
+//            System.out.println("result : "+stack.peek());
+            result.add(stack.peek());
+        }
+
+        return result;
     }
 
     public void getResult() {
         List<String> prefixes = new ArrayList<String>();
-        System.out.println(prefixToPostfix(prefixes));
+        prefixes.add("*34");
+        prefixes.add("+1*23");
+        prefixes.add("+12");
+        prefixes.add("+1**23/14");
+        List<String> result = prefixToPostfix(prefixes);
+//        for (String item : result) {
+//            System.out.println(item);
+//        }
     }
 }

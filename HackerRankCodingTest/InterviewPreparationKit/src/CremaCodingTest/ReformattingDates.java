@@ -154,6 +154,27 @@ public class ReformattingDates {
 
         return result;
     }
+
+    public static List<String> reformatDate4(List<String> dates) {
+        List<String> resultList = new ArrayList<>();
+        int dateSize = dates.size();
+        String[] monthArray = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
+        int monthArrayLength = monthArray.length;
+        Map<String, String> monthKeyVal = new HashMap<String, String>();
+        for (int i=0 ; i < monthArrayLength ; i++){
+            monthKeyVal.put(monthArray[i] , String.valueOf(i+1));
+        }
+        for (int i=0 ; i < dateSize ; i++){
+            String[] splitDate = dates.get(i).split(" ");
+            String day = String.format("%02d", Integer.valueOf(splitDate[0].replaceAll("[^0-9]","")));
+            String month = String.format("%02d", Integer.valueOf(monthKeyVal.get(splitDate[1])));
+            String year = splitDate[2];
+            resultList.add(year+"-"+month+"-"+day);
+        }
+        // Write your code here
+        return resultList;
+    }
+
     public void test() {
         Date d = new Date("20 Oct 2052");
 //        SimpleDateFormat format = new SimpleDateFormat("dd MMM YYYY", Locale.UK);
@@ -208,17 +229,17 @@ public class ReformattingDates {
                 "5th Nov 1944," +
                 "23rd Jun 2072";
 
-//        String[] arr = ss.split(",");
+        String[] arr = ss.split(",");
         List<String> list = new ArrayList<>();
         int i = 0;
-        while (i < 100000) {
-            list.add("23rd Jun 2072");
-            i++;
-        }
-//        for(String item : arr) {
-//            list.add(item);
+//        while (i < 100000) {
+//            list.add("23rd Jun 2072");
+//            i++;
 //        }
+        for(String item : arr) {
+            list.add(item);
+        }
 
-        reformatDate3(list);
+        reformatDate4(list);
     }
 }

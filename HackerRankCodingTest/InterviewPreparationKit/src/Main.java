@@ -1,6 +1,8 @@
 import Arrays.Array2D;
 import Arrays.LeftRotation;
+import CremaCodingTest.PrefixToPostfix;
 import CremaCodingTest.ReformattingDates;
+import CremaCodingTest.ShootingBogeys;
 import DictionariesAndHashMaps.RansomNote;
 import DictionariesAndHashMaps.TwoStrings;
 import Sorting.BubbleSort;
@@ -64,9 +66,15 @@ public class Main {
 
 
         /** 크리마 코딩테스트 START */
-        ReformattingDates rd = new ReformattingDates();
-        rd.getResult();
-//        rd.test();
+//        ReformattingDates rd = new ReformattingDates();
+//        rd.getResult();
+
+        ShootingBogeys bogeys = new ShootingBogeys();
+        bogeys.getResult();
+//        bogeys.test();
+
+//        PrefixToPostfix ptp = new PrefixToPostfix();
+//        ptp.getResult();
         /** 크리마 코딩테스트 END */
 
     }
